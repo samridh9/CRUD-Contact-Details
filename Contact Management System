@@ -1,0 +1,131 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_CONTACTS 100
+
+struct Contact {
+    char name[50];
+    char phone[15];
+    char address[100];
+};
+
+struct Contact contacts[MAX_CONTACTS];
+int contactCount = 0;
+
+void createContact() {
+    if (contactCount < MAX_CONTACTS) {
+        struct Contact newContact;
+        printf("Enter name: ");
+        scanf("%s", newContact.name);
+        printf("Enter phone number: ");
+        scanf("%s", newContact.phone);
+        printf("Enter address: ");
+        scanf("%s", newContact.address);
+
+        contacts[contactCount++] = newContact;
+        printf("Contact added successfully!\n");
+    } else {
+        printf("Contact list is full.\n");
+    }
+}
+
+void readContacts() {
+    if (contactCount > 0) {
+        printf("Contacts:\n");
+        for (int i = 0; i < contactCount; i++) {
+            printf("Name: %s\nPhone: %s\nAddress: %s\n\n", contacts[i].name, contacts[i].phone, contacts[i].address);
+        }
+    } else {
+        printf("No contacts available.\n");
+    }
+}
+
+void updateContact() {
+    char searchPhone[15];
+    printf("Enter phone number to update: ");
+    scanf("%s", searchPhone);
+
+    for (int i = 0; i < contactCount; i++) {
+        if (strcmp(contacts[i].phone, searchPhone) == 0) {
+            printf("Enter updated name: ");
+            scanf("%s", contacts[i].name);
+            printf("Enter updated address: ");
+            scanf("%s", contacts[i].address);
+            printf("Contact updated successfully!\n");
+            return;
+        }
+    }
+    printf("Contact not found.\n");
+}
+
+void deleteContact() {
+    char searchPhone[15];
+    printf("Enter phone number to delete: ");
+    scanf("%s", searchPhone);
+
+    for (int i = 0; i < contactCount; i++) {
+        if (strcmp(contacts[i].phone, searchPhone) == 0) {
+            for (int j = i; j < contactCount - 1; j++) {
+                contacts[j] = contacts[j + 1];
+            }
+            contactCount--;
+            printf("Contact deleted successfully!\n");
+            return;
+        }
+    }
+    printf("Contact not found.\n");
+}
+
+void searchContact() {
+    char searchPhone[15];
+    printf("Enter phone number to search: ");
+    scanf("%s", searchPhone);
+
+    for (int i = 0; i < contactCount; i++) {
+        if (strcmp(contacts[i].phone, searchPhone) == 0) {
+            printf("Name: %s\nPhone: %s\nAddress: %s\n", contacts[i].name, contacts[i].phone, contacts[i].address);
+            return;
+        }
+    }
+    printf("Contact not found.\n");
+}
+
+int main() {
+    int choice;
+
+    while (1) {
+        printf("Menu:\n");
+        printf("1. Create Contact\n");
+        printf("2. Read Contacts\n");
+        printf("3. Update Contact\n");
+        printf("4. Delete Contact\n");
+        printf("5. Search Contact\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                createContact();
+                break;
+            case 2:
+                readContacts();
+                break;
+            case 3:
+                updateContact();
+                break;
+            case 4:
+                deleteContact();
+                break;
+            case 5:
+                searchContact();
+                break;
+            case 6:
+                return 0;
+            default:
+                printf("Invalid choice. Try again.\n");
+        }
+    }
+
+    return 0;
+}
